@@ -12,6 +12,7 @@ app.get("/", (req, res) => {
 
 // 路由
 app.use("/bill", require("./routes/bill"));
+app.use("/ai", require("./routes/ai"));
 
 app.listen(3000, () => {
   console.log("server running 3000");

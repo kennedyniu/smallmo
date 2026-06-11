@@ -1,23 +1,38 @@
-<view class="container">
-
-  <scroll-view scroll-y class="chat-box">
-
+<view class="container {{currentTheme === 'dark' ? 'dark-mode' : ''}}" style="background-color: {{themeColors.background}};">
+  <!-- 聊天区域 -->
+  <scroll-view 
+    class="chat-scroll" 
+    scroll-y 
+    scroll-top="{{scrollTop}}"
+    scroll-with-animation
+    style="padding-bottom: 140rpx;"
+  >
     <block wx:for="{{messages}}" wx:key="index">
-      <view class="msg {{item.role}}">
-        <text>{{item.content}}</text>
+      <view class="msg-item {{item.role}}">
+        <view class="avatar">{{item.role === 'ai' ? 'AI' : '我'}}</view>
+        <view class="bubble {{item.role}}-bubble" 
+              style="background-color: {{item.role === 'user' ? themeColors.primary : themeColors.cardBg}}; 
+                     color: {{item.role === 'user' ? '#ffffff' : themeColors.text}};">
+          {{item.content}}
+        </view>
       </view>
     </block>
-
   </scroll-view>
 
-  <view class="input-box">
-    <input
-      placeholder="输入：今天吃饭35元"
-      value="{{input}}"
+  <!-- 底部输入栏 -->
+  <view class="input-bar" style="background-color: {{themeColors.cardBg}};">
+    <input 
+      class="input" 
+      placeholder="请输入消费内容..." 
+      value="{{input}}" 
       bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="sendMsg"
+      style="background-color: {{themeColors.background}}; color: {{themeColors.text}};"
     />
-
-    <button bindtap="send">发送</button>
+    <button class="send-btn" bindtap="sendMsg" disabled="{{isLoading}}"
+            style="background-color: {{themeColors.primary}}; color: #ffffff;">
+      {{isLoading ? '识别中...' : '发送'}}
+    </button>
   </view>
-
 </view>

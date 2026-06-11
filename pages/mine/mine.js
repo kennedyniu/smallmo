@@ -135,9 +135,10 @@ Page({
     });
   },
 goAI() {
-  wx.navigateTo({
-    url: "/pages/ai/ai"
-  })
+   console.log('✅ 按钮被点击了！');
+  wx.switchTab({
+    url: '/pages/ai/ai'
+  });
 },
   // 切换默认界面展开状态
   toggleDefaultTab() {
