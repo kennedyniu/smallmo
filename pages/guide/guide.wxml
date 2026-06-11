@@ -1,0 +1,6 @@
+<!-- pages/guide/guide.wxml -->
+<scroll-view class="container" scroll-y enhanced show-scrollbar>
+  <view class="content">
+    <rich-text nodes="{{nodes}}" />
+  </view>
+</scroll-view>

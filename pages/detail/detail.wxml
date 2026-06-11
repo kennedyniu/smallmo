@@ -1,0 +1,142 @@
+<!-- pages/detail/detail.wxml -->
+<view class="container" data-theme="{{theme}}">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-left">
+      <view class="account-selector" bindtap="showAccountPicker">
+        <text>{{currentAccountNames}}</text>
+        <text class="arrow">▼</text>
+      </view>
+    </view>
+    <view class="filter-center">
+      <view class="search-icon" bindtap="toggleSearchPanel">
+        <text>🔍</text>
+      </view>
+    </view>
+    <view class="date-selector" bindtap="showDatePicker">
+      <text wx:if="{{isYearOnly}}">{{selectedYear}}年</text>
+      <text wx:else>{{selectedYear}}年{{selectedMonth}}月</text>
+      <text class="arrow">▼</text>
+    </view>
+  </view>
+
+  <!-- 搜索面板 -->
+  <view class="search-panel" wx:if="{{showSearchPanel}}">
+    <view class="search-row">
+      <view class="search-input-wrap">
+        <input class="search-input" placeholder="搜索类别或备注" value="{{searchKeyword}}" bindinput="onSearchInput" bindconfirm="confirmSearch" confirm-type="search" />
+        <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="clearKeyword">×</view>
+      </view>
+      <view class="date-btns">
+        <picker mode="date" value="{{searchStartDate}}" start="2000-01-01" end="2099-12-31" bindchange="onStartDateChange">
+          <view class="date-btn {{searchStartDate ? '' : 'placeholder'}}">{{searchStartDate || '开始日期'}}</view>
+        </picker>
+        <text class="date-sep">~</text>
+        <picker mode="date" value="{{searchEndDate}}" start="2000-01-01" end="2099-12-31" bindchange="onEndDateChange">
+          <view class="date-btn {{searchEndDate ? '' : 'placeholder'}}">{{searchEndDate || '结束日期'}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="search-btns">
+      <view class="reset-btn" bindtap="resetSearch">清空</view>
+      <view class="confirm-btn" bindtap="confirmSearch">搜索</view>
+    </view>
+  </view>
+
+  <!-- 统计摘要 -->
+  <view class="summary card">
+    <view class="summary-item {{filterType === 'expense' ? 'active' : ''}}" bindtap="filterByType" data-type="expense">
+      <text class="label">支出</text>
+      <text class="amount expense">-{{totalExpense}}</text>
+    </view>
+    <view class="summary-item {{filterType === 'income' ? 'active' : ''}}" bindtap="filterByType" data-type="income">
+      <text class="label">收入</text>
+      <text class="amount income">+{{totalIncome}}</text>
+    </view>
+  </view>
+
+  <!-- 账单列表滚动区域 -->
+  <scroll-view class="bill-scroll {{showSearchPanel ? 'with-search' : ''}}" scroll-y>
+    <view class="bill-list">
+      <block wx:if="{{groupedBills.length === 0}}">
+        <view class="empty-tip">
+          <text>暂无账单记录</text>
+        </view>
+      </block>
+      <block wx:for="{{groupedBills}}" wx:key="date">
+        <!-- 每日合计 -->
+        <view class="day-summary">
+          <text class="day-date">{{item.displayDate}} {{item.weekDay}}</text>
+          <text class="day-total">
+            <text wx:if="{{item.totalExpenseNum > 0}}">支出: -{{item.totalExpense}}</text>
+            <text wx:if="{{item.totalExpenseNum > 0 && item.totalIncomeNum > 0}}"> | </text>
+            <text wx:if="{{item.totalIncomeNum > 0}}">收入: +{{item.totalIncome}}</text>
+          </text>
+        </view>
+        <!-- 当日账单 -->
+        <block wx:for="{{item.bills}}" wx:key="id">
+          <view class="bill-slide {{item.slideOpen ? 'open' : ''}}" data-id="{{item.id}}" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+            <view class="bill-delete" catchtap="deleteBill" data-id="{{item.id}}">删除</view>
+            <view class="bill-item card" bindtap="editBill" data-id="{{item.id}}">
+              <view class="bill-icon">{{item.categoryIcon}}</view>
+              <view class="bill-info">
+                <text class="bill-category">{{item.categoryName}}</text>
+                <text class="bill-remark" wx:if="{{item.remark}}">{{item.remark}}</text>
+              </view>
+              <view class="bill-amount {{item.type === 'expense' ? 'expense' : 'income'}}">
+                {{item.type === 'expense' ? '-' : '+'}}{{item.amount}}
+              </view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+  </scroll-view>
+
+  <!-- 账本选择器 -->
+  <view class="picker-mask" wx:if="{{showAccountPicker}}" bindtap="hideAccountPicker"></view>
+  <view class="account-picker" wx:if="{{showAccountPicker}}">
+    <view class="picker-header">
+      <text>选择账本</text>
+      <text class="confirm-btn" bindtap="confirmAccount">确定</text>
+    </view>
+    <view class="picker-list">
+      <view class="picker-item checkbox-item" wx:for="{{accountsWithAll}}" wx:key="id" bindtap="toggleAccount" data-id="{{item.id}}">
+        <view class="checkbox {{item.checked ? 'checked' : ''}}">
+          <text wx:if="{{item.checked}}">✓</text>
+        </view>
+        <text class="picker-text">{{item.name}}</text>
+      </view>
+      <view wx:if="{{accountError}}" class="error-tip">请至少选择一个账本</view>
+    </view>
+  </view>
+
+  <!-- 日期选择器 -->
+  <view class="picker-mask" wx:if="{{showDatePicker}}" bindtap="hideDatePicker"></view>
+  <view class="date-picker" wx:if="{{showDatePicker}}">
+    <view class="picker-header">
+      <text>选择年月</text>
+      <text class="close" bindtap="hideDatePicker">×</text>
+    </view>
+    <view class="date-picker-content">
+      <view class="picker-column">
+        <view class="column-title">年份</view>
+        <scroll-view scroll-y class="picker-scroll">
+          <view class="picker-item {{index === selectedYearIndex ? 'active' : ''}}" wx:for="{{yearList}}" wx:key="*this" bindtap="selectYear" data-index="{{index}}" data-year="{{item}}">
+            <text>{{item}}年</text>
+            <text class="check" wx:if="{{index === selectedYearIndex}}">✓</text>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="picker-column">
+        <view class="column-title">月份</view>
+        <scroll-view scroll-y class="picker-scroll">
+          <view class="picker-item {{item === selectedMonth ? 'active' : ''}}" wx:for="{{displayMonthList}}" wx:key="*this" bindtap="selectMonth" data-month="{{item}}">
+            <text>{{item}}月</text>
+            <text class="check" wx:if="{{item === selectedMonth}}">✓</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+</view>

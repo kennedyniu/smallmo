@@ -1,0 +1,30 @@
+<!-- custom-tab-bar/index.wxml -->
+<view class="tab-bar">
+  <view class="tab-item {{currentIndex === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="{{0}}">
+    <view class="tab-icon">
+      <text class="icon-text {{currentIndex === 0 ? 'active' : ''}}">{{currentIndex === 0 ? '📝' : '📋'}}</text>
+    </view>
+    <text class="tab-text {{currentIndex === 0 ? 'active' : ''}}">明细</text>
+  </view>
+
+  <view class="tab-item {{currentIndex === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="{{1}}">
+    <view class="tab-icon">
+      <text class="icon-text {{currentIndex === 1 ? 'active' : ''}}">{{currentIndex === 1 ? '📈' : '📊'}}</text>
+    </view>
+    <text class="tab-text {{currentIndex === 1 ? 'active' : ''}}">图表</text>
+  </view>
+
+  <view class="tab-item {{currentIndex === 2 ? 'active' : ''}}" bindtap="switchTab" data-index="{{2}}">
+    <view class="tab-icon">
+      <text class="icon-text {{currentIndex === 2 ? 'active' : ''}}" style="font-size: 52rpx;">{{currentIndex === 2 ? '➕' : '✏️'}}</text>
+    </view>
+    <text class="tab-text {{currentIndex === 2 ? 'active' : ''}}">记账</text>
+  </view>
+
+  <view class="tab-item {{currentIndex === 3 ? 'active' : ''}}" bindtap="switchTab" data-index="{{3}}">
+    <view class="tab-icon">
+      <text class="icon-text {{currentIndex === 3 ? 'active' : ''}}">{{currentIndex === 3 ? '👤' : '👥'}}</text>
+    </view>
+    <text class="tab-text {{currentIndex === 3 ? 'active' : ''}}">我的</text>
+  </view>
+</view>

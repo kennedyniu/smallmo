@@ -1,0 +1,23 @@
+<view class="container">
+
+  <scroll-view scroll-y class="chat-box">
+
+    <block wx:for="{{messages}}" wx:key="index">
+      <view class="msg {{item.role}}">
+        <text>{{item.content}}</text>
+      </view>
+    </block>
+
+  </scroll-view>
+
+  <view class="input-box">
+    <input
+      placeholder="输入：今天吃饭35元"
+      value="{{input}}"
+      bindinput="onInput"
+    />
+
+    <button bindtap="send">发送</button>
+  </view>
+
+</view>

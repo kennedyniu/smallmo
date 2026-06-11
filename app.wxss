@@ -1,0 +1,399 @@
+/* app.wxss - 全局样式和专业主题 */
+
+/* ==================== 主题变量定义 ==================== */
+
+/* 简约现代 - 默认 */
+page, .container {
+  --primary-color: #1890ff;
+  --primary-light: #e6f7ff;
+  --secondary-color: #52c41a;
+  --bg-color: #f5f5f5;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --text-color-light: #595959;
+  --text-secondary: #666666;
+  --border-color: #e8e8e8;
+  --divider-color: #f5f5f5;
+  --expense-color: #ff4d4f;
+  --expense-light: #fff1f0;
+  --income-color: #52c41a;
+  --income-light: #f6ffed;
+  --tab-bg: #ffffff;
+  --nav-bg: #ffffff;
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+  --shadow-top: 0 -4rpx 16rpx rgba(0, 0, 0, 0.04);
+  /* 语义化文字颜色 */
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-expense: #ffffff;
+  --text-on-income: #ffffff;
+  --text-on-card: #333333;
+  --text-on-bg: #333333;
+  /* 图标颜色 */
+  --icon-color: var(--text-secondary);
+  --icon-color-active: var(--primary-color);
+  /* 动画变量 */
+  --transition-speed-fast: 0.15s;
+  --transition-speed-normal: 0.2s;
+  --transition-speed-slow: 0.3s;
+  --transition-timing: ease;
+  --transition-timing-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 暗色主题 */
+.container[data-theme="dark"], page[data-theme="dark"] {
+  --primary-color: #1890ff;
+  --primary-light: #1f3a5f;
+  --secondary-color: #52c41a;
+  --bg-color: #1a1a1a;
+  --card-bg: #2a2a2a;
+  --text-color: #f5f5f5;
+  --text-color-light: #d9d9d9;
+  --text-secondary: #999999;
+  --border-color: #3a3a3a;
+  --divider-color: #262626;
+  --expense-color: #ff6b6b;
+  --expense-light: #3d1a1a;
+  --income-color: #69db7c;
+  --income-light: #1a3d20;
+  --tab-bg: #2a2a2a;
+  --nav-bg: #2a2a2a;
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.4);
+  --shadow-top: 0 -4rpx 16rpx rgba(0, 0, 0, 0.2);
+  /* 语义化文字颜色 */
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-expense: #ffffff;
+  --text-on-income: #ffffff;
+  --text-on-card: #f5f5f5;
+  --text-on-bg: #f5f5f5;
+  /* 图标颜色 */
+  --icon-color: var(--text-secondary);
+  --icon-color-active: var(--primary-color);
+}
+
+/* 男性商务款 */
+.container[data-theme="male"], page[data-theme="male"] {
+  --primary-color: #1a237e;
+  --primary-light: #e8eaf6;
+  --secondary-color: #0d47a1;
+  --bg-color: #eceff1;
+  --card-bg: #ffffff;
+  --text-color: #263238;
+  --text-color-light: #424242;
+  --text-secondary: #546e7a;
+  --border-color: #cfd8dc;
+  --divider-color: #eeeeee;
+  --expense-color: #d32f2f;
+  --expense-light: #ffebee;
+  --income-color: #388e3c;
+  --income-light: #e8f5e9;
+  --tab-bg: #ffffff;
+  --nav-bg: #1a237e;
+  --shadow-sm: 0 2rpx 8rpx rgba(26, 35, 126, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(26, 35, 126, 0.12);
+  --shadow-lg: 0 8rpx 24rpx rgba(26, 35, 126, 0.16);
+  --shadow-top: 0 -4rpx 16rpx rgba(26, 35, 126, 0.08);
+  /* 语义化文字颜色 */
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-expense: #ffffff;
+  --text-on-income: #ffffff;
+  --text-on-card: #263238;
+  --text-on-bg: #263238;
+  /* 图标颜色 */
+  --icon-color: var(--text-secondary);
+  --icon-color-active: var(--primary-color);
+}
+
+/* 女性优雅款 */
+.container[data-theme="female"], page[data-theme="female"] {
+  --primary-color: #ec407a;
+  --primary-light: #fce4ec;
+  --secondary-color: #ab47bc;
+  --bg-color: #fce4ec;
+  --card-bg: #ffffff;
+  --text-color: #4a148c;
+  --text-color-light: #6a1b9a;
+  --text-secondary: #7b1fa2;
+  --border-color: #f8bbd0;
+  --divider-color: #fce4ec;
+  --expense-color: #e91e63;
+  --expense-light: #fce4ec;
+  --income-color: #9c27b0;
+  --income-light: #f3e5f5;
+  --tab-bg: #ffffff;
+  --nav-bg: #ec407a;
+  --shadow-sm: 0 2rpx 8rpx rgba(236, 64, 122, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(236, 64, 122, 0.12);
+  --shadow-lg: 0 8rpx 24rpx rgba(236, 64, 122, 0.16);
+  --shadow-top: 0 -4rpx 16rpx rgba(236, 64, 122, 0.08);
+  /* 语义化文字颜色 */
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-expense: #ffffff;
+  --text-on-income: #ffffff;
+  --text-on-card: #4a148c;
+  --text-on-bg: #4a148c;
+  /* 图标颜色 */
+  --icon-color: var(--text-secondary);
+  --icon-color-active: var(--primary-color);
+}
+
+/* 可爱萌系款 */
+.container[data-theme="cute"], page[data-theme="cute"] {
+  --primary-color: #ffb74d;
+  --primary-light: #fff3e0;
+  --secondary-color: #ff8a65;
+  --bg-color: #fff3e0;
+  --card-bg: #ffffff;
+  --text-color: #5d4037;
+  --text-color-light: #795548;
+  --text-secondary: #8d6e63;
+  --border-color: #ffcc80;
+  --divider-color: #fff3e0;
+  --expense-color: #ff7043;
+  --expense-light: #fbe9e7;
+  --income-color: #66bb6a;
+  --income-light: #e8f5e9;
+  --tab-bg: #ffffff;
+  --nav-bg: #ffb74d;
+  --shadow-sm: 0 2rpx 8rpx rgba(255, 183, 77, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(255, 183, 77, 0.12);
+  --shadow-lg: 0 8rpx 24rpx rgba(255, 183, 77, 0.16);
+  --shadow-top: 0 -4rpx 16rpx rgba(255, 183, 77, 0.08);
+  /* 语义化文字颜色 */
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-expense: #ffffff;
+  --text-on-income: #ffffff;
+  --text-on-card: #5d4037;
+  --text-on-bg: #5d4037;
+  /* 图标颜色 */
+  --icon-color: var(--text-secondary);
+  --icon-color-active: var(--primary-color);
+}
+
+/* ==================== 全局样式 ==================== */
+
+page {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 28rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  height: 100%;
+  overflow: hidden;
+}
+
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+/* 卡片样式 */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--border-color);
+}
+
+/* 按钮样式 */
+.btn {
+  padding: 24rpx 48rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color));
+  color: var(--text-on-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color));
+  color: var(--text-on-secondary);
+}
+
+.btn-outline {
+  border: 2rpx solid var(--primary-color);
+  color: var(--primary-color);
+  background-color: transparent;
+}
+
+/* 输入框样式 */
+.input {
+  border: 2rpx solid var(--border-color);
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+}
+
+/* 工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-expense {
+  color: var(--expense-color);
+}
+
+.text-income {
+  color: var(--income-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-light {
+  color: var(--text-color-light);
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-sm {
+  font-size: 24rpx;
+}
+
+.text-lg {
+  font-size: 32rpx;
+}
+
+.text-xl {
+  font-size: 40rpx;
+}
+
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.mb-30 { margin-bottom: 30rpx; }
+.p-20 { padding: 20rpx; }
+.p-30 { padding: 30rpx; }
+
+/* 金额样式 */
+.amount {
+  font-weight: 600;
+}
+
+.amount-lg {
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.tag-primary {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.tag-expense {
+  background-color: var(--expense-light);
+  color: var(--expense-color);
+}
+
+.tag-income {
+  background-color: var(--income-light);
+  color: var(--income-color);
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background-color: var(--divider-color);
+  margin: 20rpx 0;
+}
+
+/* 阴影 */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+/* 圆角 */
+.radius-sm { border-radius: 8rpx; }
+.radius-md { border-radius: 12rpx; }
+.radius-lg { border-radius: 20rpx; }
+.radius-full { border-radius: 999rpx; }
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+}
+
+.empty-state-icon {
+  font-size: 96rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}

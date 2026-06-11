@@ -1,0 +1,221 @@
+<!-- pages/add/add.wxml -->
+<view class="container" data-theme="{{theme}}">
+  <!-- 顶部：账套选择和收支类型切换 -->
+  <view class="top-bar">
+    <view class="account-picker" bindtap="showAccountPicker">
+      <text class="account-name">{{currentAccountName || '默认账本'}}</text>
+      <text class="account-arrow">▼</text>
+    </view>
+    <view class="type-switch">
+      <view class="type-btn {{type === 'expense' ? 'active' : ''}}" bindtap="switchType" data-type="expense">
+        <text>支出</text>
+      </view>
+      <view class="type-btn {{type === 'income' ? 'active' : ''}}" bindtap="switchType" data-type="income">
+        <text>收入</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类选择 - 垂直滚动 -->
+  <view class="category-bar" id="categoryBar" bindtap="onCategoryBarTap">
+    <scroll-view class="category-scroll"
+                 scroll-y="{{true}}"
+                 enhanced
+                 show-scrollbar="{{true}}"
+                 bounces="{{false}}">
+      <view class="category-list">
+        <!-- 类别项 -->
+        <view class="category-item {{selectedCategoryId === item.id ? 'active' : ''}}"
+              wx:for="{{categories}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              data-name="{{item.name}}"
+              data-index="{{index}}"
+              bindtap="onCategoryItemTap"
+              bindlongpress="onItemLongPress">
+          <view class="category-icon-wrap">
+            <text class="category-icon">{{item.icon}}</text>
+          </view>
+          <text class="category-name">{{item.name}}</text>
+        </view>
+        <!-- 新增按钮 -->
+        <view class="category-item category-add" catchtap="showAddModal">
+          <view class="category-icon-wrap">
+            <text class="category-icon">➕</text>
+          </view>
+          <text class="category-name">新增</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 金额和日期显示区域 -->
+  <view class="display-section">
+    <picker mode="date" value="{{date}}" start="2020-01-01" end="2030-12-31" bindchange="onDateChange">
+      <view class="date-btn">
+        <text class="date-icon">📅</text>
+        <text class="date-text">{{dateDisplayText}}</text>
+      </view>
+    </picker>
+    <view class="amount-section">
+      <text class="currency">¥</text>
+      <text class="amount">{{displayAmount || '0'}}</text>
+    </view>
+  </view>
+
+  <!-- 备注输入 -->
+  <view class="remark-bar">
+    <text class="remark-icon">📝</text>
+    <input class="remark-input"
+           type="text"
+           value="{{remark}}"
+           bindinput="onRemarkInput"
+           maxlength="20"
+           placeholder="点击添加备注..." />
+  </view>
+
+  <!-- 数字键盘 -->
+  <view class="keyboard">
+    <view class="key-row">
+      <view class="key-num" data-value="7" bindtap="onKeyTap">7</view>
+      <view class="key-num" data-value="8" bindtap="onKeyTap">8</view>
+      <view class="key-num" data-value="9" bindtap="onKeyTap">9</view>
+      <view class="key-op" data-value="+" bindtap="onKeyTap">+</view>
+    </view>
+    <view class="key-row">
+      <view class="key-num" data-value="4" bindtap="onKeyTap">4</view>
+      <view class="key-num" data-value="5" bindtap="onKeyTap">5</view>
+      <view class="key-num" data-value="6" bindtap="onKeyTap">6</view>
+      <view class="key-op" data-value="-" bindtap="onKeyTap">−</view>
+    </view>
+    <view class="key-row">
+      <view class="key-num" data-value="1" bindtap="onKeyTap">1</view>
+      <view class="key-num" data-value="2" bindtap="onKeyTap">2</view>
+      <view class="key-num" data-value="3" bindtap="onKeyTap">3</view>
+      <view class="key-done" bindtap="onSaveBill">完成</view>
+    </view>
+    <view class="key-row">
+      <view class="key-num" data-value="." bindtap="onKeyTap">.</view>
+      <view class="key-num" data-value="0" bindtap="onKeyTap">0</view>
+      <view class="key-back" bindtap="deleteLast">⌫</view>
+      <view class="key-next" bindtap="onSaveAndContinue">下一笔</view>
+    </view>
+  </view>
+
+  <!-- 新增类别弹窗（全屏） -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="closeAddModal"></view>
+  <view class="fullscreen-modal" wx:if="{{showAddModal}}">
+    <!-- 顶部标题栏 -->
+    <view class="fullscreen-header">
+      <view class="header-btn cancel" catchtap="closeAddModal">取消</view>
+      <view class="header-title">{{type === 'expense' ? '新增支出类别' : '新增收入类别'}}</view>
+      <view class="header-btn confirm" catchtap="confirmAddCategory">确认</view>
+    </view>
+
+    <!-- 内容区域 -->
+    <view class="fullscreen-content">
+      <!-- 名称输入 -->
+      <view class="input-section">
+        <view class="input-row">
+          <view class="selected-icon-preview">{{selectedIcon}}</view>
+          <input class="category-name-input"
+                 type="text"
+                 placeholder="请输入名称（最多4字）"
+                 value="{{newCategoryName}}"
+                 bindinput="onCategoryNameInput"
+                 confirm-type="done"
+                 bindconfirm="confirmAddCategory" />
+        </view>
+      </view>
+
+      <!-- 图标选择 -->
+      <scroll-view class="icon-scroll-section" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{false}}">
+        <view class="icon-categories">
+          <view class="icon-category" wx:for="{{iconCategories}}" wx:key="name">
+            <view class="category-title">{{item.name}}</view>
+            <view class="icon-grid">
+              <view class="fullscreen-icon-option {{selectedIcon === icon ? 'selected' : ''}}"
+                    wx:for="{{item.icons}}"
+                    wx:for-item="icon"
+                    wx:key="*this"
+                    catchtap="selectIcon"
+                    data-icon="{{icon}}">
+                <text class="icon-emoji">{{icon}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+      </view>
+
+  <!-- 删除确认弹窗 -->
+  <view class="modal-mask" wx:if="{{showDeleteModal}}" catchtap="closeDeleteModal"></view>
+  <view class="delete-modal" wx:if="{{showDeleteModal}}">
+    <view class="modal-title">删除类别</view>
+    <view class="modal-content">
+      <view class="delete-tip" wx:if="{{deleteTarget.billCount > 0}}">「{{deleteTarget.name}}」下有 {{deleteTarget.billCount}} 笔账单，请选择处理方式</view>
+      <view class="delete-tip" wx:else>确定要删除「{{deleteTarget.name}}」吗？</view>
+      <view class="delete-options">
+        <view class="delete-option" catchtap="directDeleteCategory">直接删除</view>
+        <view class="delete-option" wx:if="{{deleteTarget.billCount > 0}}" catchtap="showMigrateOptions">迁移到其他类别</view>
+      </view>
+    </view>
+    <view class="modal-buttons">
+      <view class="modal-btn cancel" catchtap="closeDeleteModal">取消</view>
+    </view>
+  </view>
+
+  <!-- 迁移选择弹窗 -->
+  <view class="modal-mask" wx:if="{{showMigrateModal}}" catchtap="closeMigrateModal"></view>
+  <view class="migrate-modal" wx:if="{{showMigrateModal}}">
+    <view class="modal-title">选择迁移目标</view>
+    <scroll-view class="migrate-list" scroll-y>
+      <view class="migrate-item {{migrateTargetId === item.id ? 'selected' : ''}}"
+            wx:for="{{migrateOptions}}"
+            wx:key="id"
+            catchtap="selectMigrateTarget"
+            data-id="{{item.id}}">
+        <text class="migrate-icon">{{item.icon}}</text>
+        <text class="migrate-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+    <view class="modal-buttons">
+      <view class="modal-btn cancel" catchtap="closeMigrateModal">取消</view>
+      <view class="modal-btn confirm" catchtap="confirmMigrateAndDelete">确定迁移</view>
+    </view>
+  </view>
+
+  <!-- 全屏类别编辑器 -->
+  <view class="category-editor-mask" wx:if="{{showCategoryEditor}}" bindtap="saveAndCloseEditor">
+    <view class="category-editor" catchtap="stopPropagation">
+      <!-- 编辑器头部 -->
+      <view class="editor-header" catchtap="stopPropagation">
+        <view class="editor-title">编辑类别</view>
+        <view class="editor-close" catchtap="saveAndCloseEditor">×</view>
+      </view>
+      <!-- 编辑器类别列表 -->
+      <scroll-view class="editor-scroll" scroll-y="{{true}}" bindtap="saveAndCloseEditor">
+        <view class="editor-category-list" catchtap="stopPropagation">
+          <view class="editor-category-item {{editorDraggingIndex === index ? 'dragging' : ''}}"
+                wx:for="{{editorCategories}}"
+                wx:key="id"
+                data-index="{{index}}"
+                catchtap="stopPropagation"
+                bindtouchstart="onEditorSortTouchStart"
+                bindtouchmove="onEditorSortTouchMove"
+                bindtouchend="onEditorSortTouchEnd">
+            <view class="editor-category-icon">{{item.icon}}</view>
+            <view class="editor-category-name">{{item.name}}</view>
+            <view class="editor-delete-btn"
+                  catchtap="onEditorDeleteTap"
+                  data-id="{{item.id}}"
+                  data-name="{{item.name}}">×</view>
+            <text class="editor-drag-handle">⋮⋮</text>
+          </view> 
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

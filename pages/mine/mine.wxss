@@ -1,0 +1,656 @@
+/* pages/mine/mine.wxss - 我的页面专业样式 */
+
+.container {
+  height: 100%;
+  box-sizing: border-box;
+}
+.ai-entry {
+  margin: 20rpx;
+  padding: 30rpx;
+  background: #1890ff;
+  color: #fff;
+  border-radius: 16rpx;
+  text-align: center;
+}
+/* 分区标题 */
+.section {
+  background-color: var(--card-bg);
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--border-color);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 28rpx;
+  border-bottom: 1rpx solid var(--border-color);
+  background-color: var(--card-bg);
+  transition: background-color 0.2s ease;
+}
+
+.section-header .picker-value {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  background-color: var(--bg-color);
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: var(--primary-color);
+}
+
+.section-header:active {
+  background-color: var(--bg-color);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+}
+
+.section-title::before {
+  content: '';
+  width: 6rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3rpx;
+  margin-right: 16rpx;
+}
+
+.arrow {
+  color: var(--text-secondary);
+  font-size: 24rpx;
+  transition: transform 0.3s ease;
+}
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+.section-desc {
+  padding: 20rpx 28rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  background-color: var(--card-bg);
+}
+
+/* 主题设置 */
+.theme-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 24rpx;
+  gap: 20rpx;
+}
+
+.theme-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(20% - 16rpx);
+}
+
+.theme-preview {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin-bottom: 12rpx;
+  border: 4rpx solid transparent;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+}
+
+.theme-preview.simple {
+  background: linear-gradient(135deg, #1890ff 0%, #52c41a 100%);
+}
+
+.theme-preview.dark {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+
+.theme-preview.male {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+}
+
+.theme-preview.female {
+  background: linear-gradient(135deg, #ec407a 0%, #ab47bc 100%);
+}
+
+.theme-preview.cute {
+  background: linear-gradient(135deg, #ffb74d 0%, #ff8a65 100%);
+}
+
+.theme-item.active .theme-preview {
+  border-color: var(--primary-color);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-item text {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.theme-item.active text {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* 账本管理 */
+.account-list {
+  padding: 0;
+}
+
+.account-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx;
+  border-bottom: 1rpx solid var(--divider-color);
+  transition: background-color 0.2s ease;
+}
+
+.account-item:last-child {
+  border-bottom: none;
+}
+
+.account-item:active {
+  background-color: var(--bg-color);
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.account-name {
+  font-size: 30rpx;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.account-name-input {
+  font-size: 30rpx;
+  color: var(--text-color);
+  font-weight: 500;
+  border: 2rpx solid var(--primary-color);
+  border-radius: 8rpx;
+  padding: 8rpx 16rpx;
+  min-width: 200rpx;
+}
+
+.current-tag {
+  margin-left: 16rpx;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--text-on-primary);
+  border-radius: 8rpx;
+  font-weight: 500;
+}
+
+.delete-btn {
+  font-size: 28rpx;
+  color: var(--expense-color);
+  padding: 12rpx 20rpx;
+  border-radius: 8rpx;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:active {
+  background-color: var(--expense-light);
+}
+
+.edit-btn {
+  font-size: 28rpx;
+  color: var(--primary-color);
+  padding: 12rpx 20rpx;
+  border-radius: 8rpx;
+}
+
+.edit-btn:active {
+  background-color: var(--bg-color);
+}
+
+.add-btn {
+  text-align: center;
+  padding: 32rpx;
+  color: var(--primary-color);
+  font-size: 30rpx;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.add-btn:active {
+  background-color: var(--primary-light);
+}
+
+/* 内联添加账本 */
+.add-account-inline {
+  padding: 20rpx 28rpx;
+  background-color: var(--bg-color);
+  border-radius: 12rpx;
+  margin-top: 16rpx;
+}
+
+.add-account-inline .input {
+  background-color: var(--card-bg);
+  border: 1rpx solid var(--divider-color);
+  border-radius: 8rpx;
+  padding: 28rpx 24rpx;
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+  min-height: 80rpx;
+}
+
+.inline-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 32rpx;
+}
+
+.confirm-btn {
+  color: var(--primary-color);
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+.cancel-btn {
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+/* 菜单列表 */
+.menu-list {
+  padding: 0 28rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid var(--divider-color);
+  font-size: 30rpx;
+  color: var(--text-color);
+  transition: background-color 0.2s ease;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: var(--bg-color);
+}
+
+.menu-item .arrow {
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* 联系开发者按钮样式 - 与 menu-item 保持一致 */
+.contact-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 32rpx 0;
+  margin: 0;
+  font-size: 30rpx;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx solid var(--divider-color);
+  transition: background-color 0.2s ease;
+  border-radius: 0;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.contact-btn:last-child {
+  border-bottom: none;
+}
+
+.contact-btn:active {
+  background-color: var(--bg-color);
+}
+
+.contact-btn .arrow {
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.contact-btn::after {
+  border: none;
+}
+
+/* 统计信息 */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 32rpx 24rpx;
+  margin: 0 24rpx;
+  background: linear-gradient(135deg, var(--primary-light) 0%, transparent 100%);
+  border-radius: 16rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-top: 12rpx;
+  font-weight: 500;
+}
+
+/* 弹窗样式 */
+.picker-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  backdrop-filter: blur(8rpx);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.export-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  max-width: 640rpx;
+  background: var(--card-bg);
+  border-radius: 32rpx;
+  z-index: 101;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+  from {
+    transform: translate(-50%, -45%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid var(--border-color);
+  font-size: 32rpx;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--card-bg);
+  border-radius: 32rpx 32rpx 0 0;
+  z-index: 1;
+}
+
+.close {
+  font-size: 44rpx;
+  color: var(--text-secondary);
+  padding: 8rpx;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 32rpx;
+}
+
+.modal-footer {
+  padding: 20rpx 32rpx 32rpx;
+}
+
+.modal-footer .btn {
+  width: 100%;
+  padding: 26rpx 0 !important;
+  font-size: 32rpx !important;
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+  font-weight: 500;
+}
+
+.picker-value {
+  padding: 24rpx;
+  background-color: var(--bg-color);
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+}
+
+.checkbox-item checkbox {
+  margin-right: 16rpx;
+  transform: scale(0.9);
+}
+
+.icon-picker {
+  margin-top: 32rpx;
+}
+
+.icon-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 16rpx;
+}
+
+.icon-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80rpx;
+  height: 80rpx;
+  font-size: 40rpx;
+  background-color: var(--bg-color);
+  border-radius: 16rpx;
+  border: 3rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.icon-item:active {
+  transform: scale(0.95);
+}
+
+.icon-item.active {
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
+}
+
+.input {
+  width: 100%;
+  padding: 24rpx;
+  background-color: var(--bg-color);
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+  box-sizing: border-box;
+  border: 2rpx solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+}
+
+/* 版本信息 */
+.version-info {
+  text-align: center;
+  padding: 40rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}
+
+/* 删除和迁移模态框样式 */
+.delete-modal, .migrate-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--card-bg);
+  border-radius: 20rpx;
+  width: 600rpx;
+  z-index: 101;
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.delete-tip {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+}
+
+.delete-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.delete-option {
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.migrate-list {
+  max-height: 400rpx;
+  margin-bottom: 20rpx;
+}
+
+.migrate-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  margin-bottom: 10rpx;
+  background-color: var(--bg-color);
+  border: 2rpx solid transparent;
+}
+
+.migrate-item.selected {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+}
+
+.migrate-name {
+  font-size: 28rpx;
+  color: var(--text-color);
+}
+
+.btn-cancel {
+  background-color: var(--bg-color);
+  color: var(--text-color-light);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+}
+
+.modal-footer .btn {
+  margin: 0 10rpx;
+  flex: 1;
+  padding: 26rpx 0 !important;
+  font-size: 32rpx !important;
+  border-radius: 12rpx;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 20rpx;
+}
+
+/* 默认界面设置 */
+.tab-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 16rpx 0;
+}
+
+.tab-option {
+  padding: 16rpx 32rpx;
+  background-color: var(--bg-color);
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+  border: 2rpx solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.tab-option.active {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  border-color: var(--primary-color);
+}

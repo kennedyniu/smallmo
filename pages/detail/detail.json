@@ -1,0 +1,6 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "小沐账本",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50
+}

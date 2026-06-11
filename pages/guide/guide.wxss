@@ -1,0 +1,125 @@
+/* pages/guide/guide.wxss */
+.container {
+  height: 100%;
+  background-color: var(--bg-color);
+  box-sizing: border-box;
+}
+
+.content {
+  padding: 40rpx 32rpx 60rpx;
+}
+
+/* 通用文本样式 */
+rich-text {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+/* 标题样式 */
+.guide-h1, .guide-h2, .guide-h3, .guide-h4 {
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.guide-h1 {
+  font-size: 40rpx;
+  border-bottom: 2rpx solid var(--primary-color);
+  padding-bottom: 20rpx;
+}
+
+.guide-h2 {
+  font-size: 36rpx;
+}
+
+.guide-h3 {
+  font-size: 32rpx;
+}
+
+.guide-h4 {
+  font-size: 28rpx;
+}
+
+/* 段落样式 */
+.guide-paragraph {
+  margin: 20rpx 0;
+}
+
+/* 列表样式 */
+.guide-list {
+  padding-left: 40rpx;
+  margin: 20rpx 0;
+}
+
+.guide-list-item {
+  margin-bottom: 10rpx;
+}
+
+/* 表格样式 */
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20rpx 0;
+  border: 1rpx solid var(--border-color);
+}
+
+.guide-table-th, .guide-table-td {
+  border: 1rpx solid var(--border-color);
+  padding: 20rpx;
+  text-align: left;
+  font-size: 26rpx;
+}
+
+.guide-table-th {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.guide-table-tr {
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.guide-table-tr:last-child {
+  border-bottom: none;
+}
+
+/* 换行样式 - 高度为0，不显示空白 */
+br {
+  height: 0;
+  display: block;
+  content: '';
+}
+
+/* 粗体样式 */
+.guide-strong {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* 代码样式 */
+.guide-code {
+  font-family: monospace, Consolas, 'Courier New';
+  background-color: var(--bg-color);
+  padding: 4rpx 8rpx;
+  border-radius: 6rpx;
+  color: var(--expense-color);
+  font-size: 26rpx;
+}
+
+/* 斜体样式 */
+.guide-italic {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* 分隔线样式 */
+.guide-hr {
+  border: none;
+  border-top: 1rpx solid var(--border-color);
+  margin: 40rpx 0;
+  height: 1rpx;
+}

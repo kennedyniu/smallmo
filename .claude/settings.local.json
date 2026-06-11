@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "WebSearch",
+      "Bash(node -e ':*)",
+      "Bash(node:*)"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/detail/detail",
+    "pages/chart/chart",
+    "pages/add/add",
+    "pages/mine/mine",
+    "pages/guide/guide",
+    "pages/ai/ai"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "记账小程序",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#1890ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+"list": [
+  {
+    "pagePath": "pages/detail/detail",
+    "text": "明细"
+  },
+  {
+    "pagePath": "pages/chart/chart",
+    "text": "图表"
+  },
+  {
+    "pagePath": "pages/add/add",
+    "text": "记账"
+  },
+  {
+    "pagePath": "pages/ai/ai",
+    "text": "AI"
+  },
+  {
+    "pagePath": "pages/mine/mine",
+    "text": "我的"
+  }
+]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

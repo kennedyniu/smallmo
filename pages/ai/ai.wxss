@@ -1,0 +1,46 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box {
+  flex: 1;
+  padding: 20rpx;
+}
+
+.msg {
+  margin: 10rpx 0;
+  padding: 16rpx;
+  border-radius: 10rpx;
+  max-width: 80%;
+}
+
+.user {
+  background: #1890ff;
+  color: #fff;
+  margin-left: auto;
+}
+
+.ai {
+  background: #f2f2f2;
+  color: #333;
+  margin-right: auto;
+}
+
+.input-box {
+  display: flex;
+  padding: 10rpx;
+  border-top: 1px solid #eee;
+}
+
+input {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 10rpx;
+  border-radius: 6rpx;
+}
+
+button {
+  margin-left: 10rpx;
+}

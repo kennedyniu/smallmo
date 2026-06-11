@@ -1,0 +1,143 @@
+<!-- pages/chart/chart.wxml -->
+<view class="container" data-theme="{{theme}}">
+  <!-- 固定头部：筛选栏 + 统计信息 -->
+  <view class="fixed-header">
+    <!-- 顶部筛选栏 -->
+    <view class="filter-bar">
+    <!-- 左边账本选择 -->
+    <view class="filter-left">
+      <view class="account-selector" bindtap="showAccountPicker">
+        <text>{{currentAccountNames}}</text>
+        <text class="arrow">▼</text>
+      </view>
+    </view>
+
+    <!-- 中间收支页签 -->
+    <view class="type-tabs">
+      <view class="tab-item {{filterType === 'expense' ? 'active' : ''}}" bindtap="switchType" data-type="expense">
+        支出
+      </view>
+      <view class="tab-item {{filterType === 'income' ? 'active' : ''}}" bindtap="switchType" data-type="income">
+        收入
+      </view>
+    </view>
+
+    <!-- 右边年月选择 -->
+    <view class="date-selector" bindtap="showDatePicker">
+      <text wx:if="{{isYearOnly}}">{{selectedYear}}年</text>
+      <text wx:else>{{selectedYear}}年{{selectedMonth}}月</text>
+      <text class="arrow">▼</text>
+    </view>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="summary card">
+    <view class="summary-item">
+      <text class="label">{{filterType === 'expense' ? '总支出' : '总收入'}}</text>
+      <text class="amount {{filterType}}">{{filterType === 'expense' ? '-' : '+'}}{{totalAmount}}</text>
+    </view>
+    <view class="summary-item">
+      <text class="label">{{filterType === 'expense' ? '平均支出' : '平均收入'}}</text>
+      <text class="amount {{filterType}}">{{filterType === 'expense' ? '-' : '+'}}{{avgAmount}}</text>
+    </view>
+    <view class="summary-item">
+      <text class="label">{{filterType === 'expense' ? '支出笔数' : '收入笔数'}}</text>
+      <text class="amount {{filterType}}">{{billCount}}</text>
+    </view>
+  </view>
+</view>
+
+<scroll-view class="scroll-content" scroll-y="{{true}}" bounces="{{false}}">
+  <!-- 柱状图 -->
+  <view class="chart-section card" wx:if="{{showCharts}}">
+    <view class="chart-title">
+      <text wx:if="{{isYearOnly}}">{{selectedYear}}年每月{{filterType === 'expense' ? '支出' : '收入'}}</text>
+      <text wx:else>{{selectedYear}}年{{selectedMonth}}月每日{{filterType === 'expense' ? '支出' : '收入'}}</text>
+    </view>
+    <scroll-view class="bar-scroll" scroll-x="{{barChartWidth > 280}}" show-scrollbar="{{false}}">
+      <view class="bar-chart-container" style="width: {{barChartWidth}}px;">
+        <view class="bar-chart">
+          <view class="bar-item" wx:for="{{barItems}}" wx:key="day" bindtap="onBarClick" data-day="{{item.day}}">
+            <text class="bar-amount">{{item.amount}}</text>
+            <view class="bar" style="height: {{item.height}}%; background-color: {{filterType === 'expense' ? '#ff4d4f' : '#52c41a'}};"></view>
+            <text class="bar-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 分类横向条形图 -->
+  <view class="chart-section card category-bar-section" wx:if="{{showCharts && categoryData.length > 0}}">
+    <view class="chart-title">{{filterType === 'expense' ? '支出' : '收入'}}分类</view>
+    <view class="category-bar-list">
+      <view class="category-bar-item" wx:for="{{categoryData}}" wx:key="name" bindtap="onCategoryClick" data-category="{{item.name}}">
+        <view class="category-bar-header">
+          <view class="category-bar-color" style="background-color: {{item.color}}"></view>
+          <text class="category-bar-name">{{item.name}}</text>
+          <text class="category-bar-value">{{item.value}}</text>
+          <text class="category-bar-percent">{{item.percentage}}%</text>
+        </view>
+        <view class="category-bar-track">
+          <view class="category-bar-fill" style="width: {{item.percentage}}%; background-color: {{item.color}};"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-tip" wx:if="{{billCount === 0}}">
+    <text>暂无{{filterType === 'expense' ? '支出' : '收入'}}数据</text>
+  </view>
+</scroll-view>
+
+  <!-- 账本选择器 -->
+  <view class="picker-mask" wx:if="{{showAccountPicker}}" bindtap="hideAccountPicker"></view>
+  <view class="account-picker" wx:if="{{showAccountPicker}}">
+    <view class="picker-header">
+      <text>选择账本</text>
+      <text class="confirm-btn" bindtap="confirmAccount">确定</text>
+    </view>
+    <view class="picker-list">
+      <view class="picker-item checkbox-item" wx:for="{{accountsWithAll}}" wx:key="id" bindtap="toggleAccount" data-id="{{item.id}}">
+        <view class="checkbox {{item.checked ? 'checked' : ''}}">
+          <text wx:if="{{item.checked}}">✓</text>
+        </view>
+        <text class="picker-text">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日期选择器 -->
+  <view class="picker-mask" wx:if="{{showDatePicker}}" bindtap="hideDatePicker"></view>
+  <view class="date-picker" wx:if="{{showDatePicker}}">
+    <view class="picker-header">
+      <text>选择年月</text>
+      <text class="close" bindtap="hideDatePicker">×</text>
+    </view>
+    <view class="date-picker-content">
+      <view class="picker-column">
+        <view class="column-title">年份</view>
+        <scroll-view scroll-y class="picker-scroll">
+          <view class="picker-item {{index === selectedYearIndex ? 'active' : ''}}" wx:for="{{yearList}}" wx:key="*this" bindtap="selectYear" data-index="{{index}}" data-year="{{item}}">
+            <text>{{item}}年</text>
+            <text class="check" wx:if="{{index === selectedYearIndex && isYearOnly}}">✓</text>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="picker-column">
+        <view class="column-title">月份</view>
+        <scroll-view scroll-y class="picker-scroll">
+          <view class="picker-item {{isYearOnly ? 'active' : ''}}" bindtap="selectYearOnly">
+            <text>整年</text>
+            <text class="check" wx:if="{{isYearOnly}}">✓</text>
+          </view>
+          <view class="picker-item {{!isYearOnly && item === selectedMonth ? 'active' : ''}}" wx:for="{{displayMonthList}}" wx:key="*this" bindtap="selectMonth" data-month="{{item}}">
+            <text>{{item}}月</text>
+            <text class="check" wx:if="{{!isYearOnly && item === selectedMonth}}">✓</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,273 @@
+<!-- pages/mine/mine.wxml -->
+<scroll-view class="container" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{true}}" data-theme="{{theme}}" style="padding-bottom: 140rpx;" catchtap="onPageTap">
+    <!-- 🔥 新增 AI入口（放在最顶部统计下面） -->
+  <view class="section card" bindtap="goAI">
+    <view class="menu-item" style="justify-content: center; font-weight: bold;">
+      🤖 AI记账助手（智能分析 / 自动记账）
+    </view>
+  </view>
+  <!-- 统计信息 -->
+  <view class="section card">
+    <view class="stats">
+      <view class="stat-item">
+        <text class="stat-value">{{accountCount}}</text>
+        <text class="stat-label">账本数量</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{billCount}}</text>
+        <text class="stat-label">记账笔数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{recordingDays}}</text>
+        <text class="stat-label">记账天数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主题设置 -->
+  <view class="section card"> 
+    <view class="theme-list">
+      <view class="theme-item {{theme === 'simple' ? 'active' : ''}}" bindtap="setTheme" data-theme="simple">
+        <view class="theme-preview simple"></view>
+        <text>简约现代</text>
+      </view>
+      <view class="theme-item {{theme === 'dark' ? 'active' : ''}}" bindtap="setTheme" data-theme="dark">
+        <view class="theme-preview dark"></view>
+        <text>暗色主题</text>
+      </view>
+      <view class="theme-item {{theme === 'male' ? 'active' : ''}}" bindtap="setTheme" data-theme="male">
+        <view class="theme-preview male"></view>
+        <text>男性商务</text>
+      </view>
+      <view class="theme-item {{theme === 'female' ? 'active' : ''}}" bindtap="setTheme" data-theme="female">
+        <view class="theme-preview female"></view>
+        <text>女性优雅</text>
+      </view>
+      <view class="theme-item {{theme === 'cute' ? 'active' : ''}}" bindtap="setTheme" data-theme="cute">
+        <view class="theme-preview cute"></view>
+        <text>可爱萌系</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 账本管理 -->
+  <view class="section card">
+    <view class="section-header flex-between" bindtap="toggleAccountManage">
+      <text class="section-title">账本管理</text>
+      <text class="arrow {{showAccountManage ? 'up' : ''}}">▼</text>
+    </view>
+    <view class="account-list" wx:if="{{showAccountManage}}">
+      <view class="account-item" wx:for="{{accounts}}" wx:key="id">
+        <view class="account-info" catchtap="switchAccount" data-id="{{item.id}}">
+          <block wx:if="{{editingAccountId === item.id}}">
+            <input class="account-name-input" value="{{editingAccountName}}" bindinput="onEditAccountNameInput" bindconfirm="confirmEditAccountName" focus="{{editingAccountId === item.id}}" />
+          </block>
+          <block wx:else>
+            <text class="account-name">{{item.name}}</text>
+            <text class="current-tag" wx:if="{{item.id === currentAccountId}}">当前</text>
+          </block>
+        </view>
+        <text class="edit-btn" catchtap="startEditAccountName" data-id="{{item.id}}" data-name="{{item.name}}">编辑</text>
+        <text class="delete-btn" catchtap="deleteAccount" data-id="{{item.id}}">删除</text>
+      </view>
+      <!-- 内联添加账本 -->
+      <view class="add-account-inline" wx:if="{{showAddAccountInline}}">
+        <input class="input" placeholder="请输入账本名称（最多8字）" value="{{newAccountName}}" bindinput="onNewAccountNameInput" bindconfirm="confirmAddAccount" focus="{{showAddAccountInline}}" />
+        <view class="inline-btns">
+          <text class="confirm-btn" bindtap="confirmAddAccount">确定</text>
+          <text class="cancel-btn" bindtap="cancelAddAccount">取消</text>
+        </view>
+      </view>
+      <view class="add-btn" bindtap="startAddAccount" wx:else>+ 添加账本</view>
+    </view>
+  </view>
+
+
+  <!-- 默认界面设置 -->
+  <view class="section card">
+    <view class="section-header flex-between" bindtap="toggleDefaultTab">
+      <text class="section-title">默认打开界面</text>
+      <text class="arrow {{showDefaultTab ? 'up' : ''}}">▼</text>
+    </view>
+    <view class="account-list" wx:if="{{showDefaultTab}}">
+      <view class="tab-options">
+        <view class="tab-option {{defaultTab === 'detail' ? 'active' : ''}}" bindtap="setDefaultTab" data-tab="detail">
+          <text>明细</text>
+        </view>
+        <view class="tab-option {{defaultTab === 'chart' ? 'active' : ''}}" bindtap="setDefaultTab" data-tab="chart">
+          <text>图表</text>
+        </view>
+        <view class="tab-option {{defaultTab === 'add' ? 'active' : ''}}" bindtap="setDefaultTab" data-tab="add">
+          <text>记账</text>
+        </view>
+        <view class="tab-option {{defaultTab === 'mine' ? 'active' : ''}}" bindtap="setDefaultTab" data-tab="mine">
+          <text>我的</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常用类别排序设置 -->
+  <view class="section card">
+    <view class="section-header flex-between">
+      <text class="section-title">常用类别排序</text>
+      <switch checked="{{enableRecentCategorySort}}" bindchange="toggleRecentCategorySort" color="#4CAF50"/>
+    </view>
+    <view class="section-desc" wx:if="{{enableRecentCategorySort}}">
+      <text>启用后，记账页面类别将按最近使用频率排序，常用类别显示在前</text>
+    </view>
+    <view class="section-desc" wx:else>
+      <text>关闭后，记账页面类别将按您自定义的顺序显示</text>
+    </view>
+  </view>
+
+  <!-- 云同步设置（默认关闭，暂不展示） -->
+  <!--
+  <view class="section card">
+    <view class="section-header flex-between">
+      <text class="section-title">云同步</text>
+      <switch checked="{{enableCloud}}" bindchange="toggleCloudSync" color="#4CAF50"/>
+    </view>
+    <view class="section-desc" wx:if="{{enableCloud}}">
+      <text>启用后，您的数据将自动同步到云端，换手机也能恢复数据</text>
+    </view>
+    <view class="section-desc" wx:else>
+      <text>关闭后，数据仅保存在本地，不会同步到云端</text>
+    </view>
+  </view>
+  -->
+
+  <!-- 导入导出 -->
+  <view class="section card">
+    <view class="section-header flex-between" bindtap="toggleImportExport">
+      <text class="section-title">导入导出</text>
+      <text class="arrow {{showImportExport ? 'up' : ''}}">▼</text>
+    </view>
+    <view class="account-list" wx:if="{{showImportExport}}">
+      <view class="menu-item" bindtap="exportData">
+        <text>导出账单</text>
+        <text class="arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="downloadTemplate">
+        <text>下载导入模板</text>
+        <text class="arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="importData">
+        <text>导入账单</text>
+        <text class="arrow">></text>
+      </view>
+    </view>
+  </view>
+  <!-- 功能操作 -->
+  <view class="section card">
+    <view class="menu-list">
+      <view class="menu-item" bindtap="openGuide">
+        <text>操作手册</text>
+        <text class="arrow">></text>
+      </view>
+      <!-- 联系开发者（暂不展示） -->
+      <!--
+      <button class="menu-item contact-btn" open-type="contact">
+        <text>联系开发者</text>
+      </button>
+      -->
+    </view>
+  </view>
+
+</scroll-view>
+
+<!-- 导出弹窗 -->
+<view class="picker-mask" wx:if="{{showExportModal}}" bindtap="hideExportModal"></view>
+<view class="export-modal" wx:if="{{showExportModal}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text>导出账单</text>
+      <text class="close" bindtap="hideExportModal">×</text>
+    </view>
+
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">时间范围</text>
+        <picker range="{{dateRangeList}}" bindchange="onDateRangeChange">
+          <view class="picker-value">{{dateRangeList[dateRangeIndex]}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item" wx:if="{{dateRangeIndex === 4}}">
+        <text class="form-label">自定义开始</text>
+        <picker mode="date" value="{{customStartDate}}" bindchange="onCustomStartChange">
+          <view class="picker-value">{{customStartDate}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item" wx:if="{{dateRangeIndex === 4}}">
+        <text class="form-label">自定义结束</text>
+        <picker mode="date" value="{{customEndDate}}" bindchange="onCustomEndChange">
+          <view class="picker-value">{{customEndDate}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">选择账本</text>
+        <checkbox-group bindchange="onAccountSelectChange">
+          <label class="checkbox-item" wx:for="{{accounts}}" wx:key="id">
+            <checkbox value="{{item.id}}" checked="{{accountCheckedMap[item.id]}}" />
+            <text>{{item.name}}</text>
+          </label>
+        </checkbox-group>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn btn-primary" bindtap="confirmExport">导出</button>
+    </view>
+  </view>
+</view>
+
+<!-- 删除账本弹窗 -->
+<view class="picker-mask" wx:if="{{showDeleteAccountModal}}" catchtap="closeDeleteAccountModal"></view>
+<view class="delete-modal" wx:if="{{showDeleteAccountModal}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text>删除账本</text>
+      <text class="close" catchtap="closeDeleteAccountModal">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="delete-tip" wx:if="{{deleteAccountTarget.billCount > 0}}">「{{deleteAccountTarget.name}}」下有 {{deleteAccountTarget.billCount}} 笔账单，请选择处理方式</view>
+      <view class="delete-tip" wx:else>确定要删除「{{deleteAccountTarget.name}}」吗？</view>
+      <view class="delete-options">
+        <view class="delete-option" catchtap="directDeleteAccount">直接删除</view>
+        <view class="delete-option" wx:if="{{deleteAccountTarget.billCount > 0}}" catchtap="showMigrateAccountOptions">迁移到其他账本</view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn btn-cancel" catchtap="closeDeleteAccountModal">取消</button>
+    </view>
+  </view>
+</view>
+
+<!-- 迁移账本弹窗 -->
+<view class="picker-mask" wx:if="{{showMigrateAccountModal}}" catchtap="closeMigrateAccountModal"></view>
+<view class="migrate-modal" wx:if="{{showMigrateAccountModal}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text>选择迁移目标</text>
+      <text class="close" catchtap="closeMigrateAccountModal">×</text>
+    </view>
+    <view class="modal-body">
+      <scroll-view class="migrate-list" scroll-y>
+        <view class="migrate-item {{selectedMigrateAccountId === item.id ? 'selected' : ''}}"
+              wx:for="{{migrateAccountOptions}}"
+              wx:key="id"
+              catchtap="selectMigrateAccount"
+              data-id="{{item.id}}">
+          <text class="migrate-name">{{item.name}}</text>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn btn-cancel" catchtap="closeMigrateAccountModal">取消</button>
+      <button class="btn btn-primary" catchtap="confirmMigrateAndDeleteAccount">确定迁移</button>
+    </view>
+  </view>
+</view>
