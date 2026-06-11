@@ -1,0 +1,23 @@
+
+ot@VM-0-4-centos ai-bookkeeper-server]# nohup node app.js > app.log 2>&1 &
+[10] 7365
+[root@VM-0-4-centos ai-bookkeeper-server]# tail -20 app.log
+[10]   Done                    nohup node app.js > app.log 2>&1
+nohup: ignoring input
+◇ injected env (6) from .env // tip: ⌘ enable debugging { debug: true }
+server running 3000
+[root@VM-0-4-centos ai-bookkeeper-server]# curl http://127.0.0.1:3000
+^Z
+[10]+  Stopped                 curl http://127.0.0.1:3000
+[root@VM-0-4-centos ai-bookkeeper-server]# curl -X POST http://127.0.0.1:3000/ai/parse \
+> -H "Content-Type: application/json" \
+> -d '{"text":"今天中午吃饭35元"}'
+^Z
+[11]+  Stopped                 curl -X POST http://127.0.0.1:3000/ai/parse -H "Content-Type: application/json" -d '{"text":"今天中午吃饭35元"}'
+[root@VM-0-4-centos ai-bookkeeper-server]# tail -50 app.log
+nohup: ignoring input
+◇ injected env (6) from .env // tip: ⌘ enable debugging { debug: true }
+server running 3000
+[root@VM-0-4-centos ai-bookkeeper-server]
+
+
